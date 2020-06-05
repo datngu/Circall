@@ -176,7 +176,7 @@ Rscript Circall_v0.0.0_linux_x86-64/R/doSingleEndFiltering.R gtfSqlite=Homo_sapi
 Rscript Circall_v0.0.0_linux_x86-64/R/getPseudoCircRNAsequence.R genomeFastaFile=Homo_sapiens.GRCh37.75.dna.primary_assembly.fa gtfSqlite=Homo_sapiens.GRCh37.75.sqlite txFastaFile=Homo_sapiens.GRCh37.75.cdna.all.fa CPUNUM=4 tandem=TRUE outFn_SE_filtering_Rdata=Circall_SE_filter_output.RData outFn_getPseudoSeq_Rdata=Circall_circRNAinfo_pseudoSeq.RData outFn_getPseudoSeq_fasta=Circall_pseudoSeq.fa
 ```
 
-### 6. Pair-end read filtering.
+### 6.5 Pair-end read filtering.
 Index the generated pseudo sequences.
 ```sh
 Circall_v0.0.0_linux_x86-64/linux/bin/TxIndexer -t Circall_pseudoSeq.fa -o pseudo_Idx
@@ -207,7 +207,7 @@ Now, your circRNA candidate list is in Circall_PE_filter_output.RData. If you wo
 Rscript Circall_v0.0.0_linux_x86-64/R/export.R outFn_PE_filtering_Rdata=Circall_PE_filter_output.RData outFn_circRNA_final=Circall_final.txt
 ```
 
-### 7. Run fdr2d.
+### 6.6 Run fdr2d.
 
 ```sh
 Rscript Circall_v0.0.0_linux_x86-64/R/getFdr.R outFn_PE_filtering_Rdata=Circall_PE_filter_output.RData depDataFile=Circall_v0.0.0_linux_x86-64/Data/Circall_depdata_human.RData outFn_circRNA_final=Circall_final.txt
