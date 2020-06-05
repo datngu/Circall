@@ -124,9 +124,9 @@ bash Circall_v0.0.0_linux_x86-64/Circall.sh -genome Homo_sapiens.GRCh37.75.dna.p
 - read2 -- input read2: should be in gz format
 
 ### Optional parameters are:
-- dep -- data contain depleted circRNAs: specify location of deletep data that is used as training data for estimation of fdr2d.
+- dep -- data contain depleted circRNAs: specify location of deletep data that is used as training data for estimation of fdr2d. We have prepared a Rdata file that contain data dirived from Hela, Hs68, and Hek293 datasets: Circall_v0.0.0_linux_x86-64/Data/Circall_depdata_human.RData
 - p -- number of thread: Defaut is 4
-- tag -- tag name of results:  Defaut is "Sample".
+- tag -- tag name of results:  Defaut is "Sample"
 - td -- generation of tandem sequences: TRUE/FALSE value, defaut is TRUE
 - c -- clean intermediate data: TRUE/FALSE value, defaut is TRUE
 - o -- output folder: Defaut is current directory
@@ -200,7 +200,17 @@ rm outDir_pseudo/mapInfo_*.txt
 Run Rscript to performe pair-end read filtering
 
 ```sh
-Rscript Circall_v0.0.0_linux_x86-64/R/doPairEndFiltering.R outDirWT=outDirWT outDir_pseudo=outDir_pseudo outFn_SE_filtering_Rdata=Circall_SE_filter_output.RData outFn_PE_filtering_Rdata=Circall_PE_filter_output.RData CPUNUM=4
+Rscript Circall_v0.0.0_linux_x86-64/R/doPairEndFiltering.R outDirWT=outDirWT outDir_pseudo=outDir_pseudo outFn_SE_filtering_Rdata=Circall_SE_filter_output.RData outFn_PE_filtering_Rdata=Circall_PE_filter_output.RData
 ```
-Now, your circRNA candidate list is in Circall_PE_filter_output.RData
+Now, your circRNA candidate list is in Circall_PE_filter_output.RData. If you would like to stop without fdr2d (your input data is Rnase R treated sample), you need to export results to a txt file.
+```sh
+Rscript Circall_v0.0.0_linux_x86-64/R/export.R outFn_PE_filtering_Rdata=Circall_PE_filter_output.RData outFn_circRNA_final=Circall_final.txt
+```
+
+### 7. Run fdr2d.
+
+```sh
+Rscript Circall_v0.0.0_linux_x86-64/R/getFdr.R outFn_PE_filtering_Rdata=Circall_PE_filter_output.RData depDataFile=Circall_v0.0.0_linux_x86-64/Data/Circall_depdata_human.RData outFn_circRNA_final=Circall_final.txt
+```
+
 
