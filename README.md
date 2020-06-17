@@ -131,7 +131,72 @@ bash Circall_v0.0.0_linux_x86-64/Circall.sh -genome Homo_sapiens.GRCh37.75.dna.p
 - c -- clean intermediate data: TRUE/FALSE value, defaut is TRUE
 - o -- output folder: Defaut is current directory
 
-## 6. Circall step by step instruction.
+
+
+
+## 6. A practical copy paste example of HEK293 dataset
+
+### Download and install Circall
+```sh
+wget https://github.com/datngu/Circall/releases/download/v0.0.0/Circall_v0.0.0_linux_x86-64.tar.gz -O Circall_v0.0.0_linux_x86-64.tar.gz
+```
+- Uncompress to folder
+```sh
+tar -xzvf Circall_v0.0.0_linux_x86-64.tar.gz
+```
+- Move to the *Circall_home* directory and do configuration for Circall
+```sh
+cd Circall_v0.0.0_linux_x86-64
+bash config.sh
+cd ..
+```
+- Add paths of lib folder and bin folder to LD_LIBRARY_PATH and PATH
+
+```sh
+export LD_LIBRARY_PATH=$PWD/Circall_v0.0.0_linux_x86-64/linux/lib:$LD_LIBRARY_PATH
+export PATH=$PWD/Circall_v0.0.0_linux_x86-64/linux/bin:$PATH
+```
+
+### Download genome fasta, transcript fasta and BSJ databases and annotation file.
+
+```sh
+# genenome
+wget http://ftp.ensembl.org/pub/release-75/fasta/homo_sapiens/dna/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa.gz
+gunzip Homo_sapiens.GRCh37.75.dna.primary_assembly.fa.gz
+# cDNA (transcript)
+wget http://ftp.ensembl.org/pub/release-75/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh37.75.cdna.all.fa.gz
+gunzip Homo_sapiens.GRCh37.75.cdna.all.fa.gz
+# pre-built BSJ databases
+wget https://github.com/datngu/Circall/releases/download/v0.0.0/Homo_sapiens.GRCh37.75_BSJ_sequences.fa.gz
+gunzip Homo_sapiens.GRCh37.75_BSJ_sequences.fa.gz
+# pre-genarated Sqlite annotation
+wget https://github.com/datngu/Circall/releases/download/v0.0.0/Homo_sapiens.GRCh37.75.sqlite
+```
+### Index transcriptome
+```sh
+Circall_v0.0.0_linux_x86-64/linux/bin/TxIndexer -t Homo_sapiens.GRCh37.75.cdna.all.fa -o IndexTranscriptome
+```
+### Index BSJ reference database
+
+```sh
+Circall_v0.0.0_linux_x86-64/linux/bin/TxIndexer -t Homo_sapiens.GRCh37.75_BSJ_sequences.fa -o IndexBSJ
+```
+
+### Download HEK293 RNA seq data
+
+```sh
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR347/003/SRR3479243/SRR3479243_1.fastq.gz
+wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR347/003/SRR3479243/SRR3479243_2.fastq.gz
+```
+
+### Run Circall
+
+```sh
+bash Circall_v0.0.0_linux_x86-64/Circall.sh -genome Homo_sapiens.GRCh37.75.dna.primary_assembly.fa -gtfSqlite Homo_sapiens.GRCh37.75.sqlite -txFasta Homo_sapiens.GRCh37.75.cdna.all.fa -txIdx IndexTranscriptome -bsjIdx IndexBSJ -dep Circall_v0.0.0_linux_x86-64/Data/Circall_depdata_human.RData -read1 SRR3479243_1.fastq.gz -read2 SRR3479243_2.fastq.gz -p 4 -tag testing_sample -c FALSE -o SRR3479243
+```
+
+
+<!-- ## 6. Circall step by step instruction.
 
 This part is writen for experienced users who would like to to run Circall step by step.
 We assume that you have successfully run Circall pipeline in section 5.
@@ -214,3 +279,4 @@ Rscript Circall_v0.0.0_linux_x86-64/R/getFdr.R outFn_PE_filtering_Rdata=Circall_
 ```
 
 
+ -->
