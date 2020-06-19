@@ -242,9 +242,10 @@ BSJ_info = data.frame(Chr = Chr, start_EXONSTART = start_EXONSTART, end_EXONEND 
 Run simulation
 
 ```R
-simulation = Circall_simulate(BSJ_info = BSJ_info, tandem_rate = 0.05, out_name = "Tutorial", gtfSqlite = "Homo_sapiens.GRCh37.75.sqlite", genomeFastaFile = "Homo_sapiens.GRCh37.75.dna.primary_assembly.fa", txFastaFile = "Homo_sapiens.GRCh37.75.cdna.all.fa", out_dir= "./simulation_test")
+simulation = Circall_simulate(BSJ_Info = BSJ_info, tandem_rate = 0.05, out_name = "Tutorial", gtfSqlite = "Homo_sapiens.GRCh37.75.sqlite", genomeFastaFile = "Homo_sapiens.GRCh37.75.dna.primary_assembly.fa", txFastaFile = "Homo_sapiens.GRCh37.75.cdna.all.fa", out_dir= "./simulation_test")
 
 ```
+
 
 
 <!-- ## 6. Circall step by step instruction.
