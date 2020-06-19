@@ -217,7 +217,6 @@ Circall simulator is packed in Circall container.
 - out_dir the directory contains output, defaut is the current derectory
 
 ### Example (assummed that your working directory is the folder contain installed Circall and annotation)
-/Users/datn/Documents/DATA2020/PaperNAR/Circall_v0.0.0_linux_x86-64/simulator
 
 Load function into your R
 ```R
