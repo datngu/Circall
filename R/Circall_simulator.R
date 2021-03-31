@@ -153,6 +153,12 @@ simulate_circRNA <- function(circInfo,error_rate,genes.exon.all,fasta_genome,tx.
         circRNA.seq = c(circRNA.seq,atx.seq)
         count = c(count,atx.count)
         juction_break =c(juction_break,atx.break)
+
+        #collect for printing out
+        circ_seq.raw=txSeq
+        circ_name.raw = paste0(circInfo$normID[i]," ",atx,",",txNum,",circRNA")
+        names(circ_seq.raw)=circ_name.raw
+        circ.tx.fa=c(circ.tx.fa,DNAStringSet(circ_seq.raw))
       }
       circRNA.seq.fa = DNAStringSet(circRNA.seq)
 
@@ -171,7 +177,8 @@ simulate_circRNA <- function(circInfo,error_rate,genes.exon.all,fasta_genome,tx.
       writeXStringSet(circRNA.seq.fa, fasta_i)
       unif.countmat = as.matrix(count)
       simulate_experiment_countmat(fasta_i, readmat=unif.countmat, outdir=sim_dir_i,error_rate = error_rate , strand_specific=FALSE,...)
-      system(paste0("rm ",fasta_i))     
+      system(paste0("rm ",fasta_i))
+
     }else{ # if not existing the transcript, build circRNA from the exon contig between two ends
       mytx="NONE"
       #get all exons completely inside the boundary
@@ -249,9 +256,16 @@ simulate_circRNA <- function(circInfo,error_rate,genes.exon.all,fasta_genome,tx.
 
         if(length(circRNA.seq.fa) <= 1){
           TX_num=c(TX_num,txNum)
-        TXNAME=c( TXNAME,"skiping")
+          TXNAME=c( TXNAME,"skiping")
           next
-        } 
+        }
+
+        #collect for printing out
+        circ_seq.raw=txSeq
+        circ_name.raw = paste0(circInfo$normID[i]," ",mytx,",",txNum,",circRNA")
+        names(circ_seq.raw)=circ_name.raw
+        circ.tx.fa=c(circ.tx.fa,DNAStringSet(circ_seq.raw))
+
 
 
         count = as.integer(cv.fre,names=FALSE)      
@@ -260,15 +274,22 @@ simulate_circRNA <- function(circInfo,error_rate,genes.exon.all,fasta_genome,tx.
         writeXStringSet(circRNA.seq.fa, fasta_i)      
         unif.countmat = as.matrix(count)      
         simulate_experiment_countmat(fasta_i, readmat=unif.countmat, outdir=sim_dir_i,error_rate = error_rate , strand_specific=FALSE,...)
-        system(paste0("rm ",fasta_i))  
+        system(paste0("rm ",fasta_i))
+
       }
   }    
     TX_num=c(TX_num,txNum)
     TXNAME=c( TXNAME,mytx)
-  }
+  }  
   
   circ_out_dir = paste(out_dir,"/",out_name,"_circRNA_data",sep="")
   dir.create(circ_out_dir)
+
+  circ.tx.fa=circ.tx.fa[-1]
+  exportFasta=c(circ.tx.fa) # 
+  fastaFile_circ=paste(out_dir,"/",out_name,"_circRNA.fa",sep="")
+  writeXStringSet(exportFasta, fastaFile_circ)  # 
+
 
   circRead1=paste(circ_out_dir,"/read_1.fasta",sep="")
   circRead2=paste(circ_out_dir,"/read_2.fasta",sep="")
@@ -420,4 +441,5 @@ convertReverseComplement<-function(DNAseq){
   DNAseqRc=paste(DNAarr,collapse = "")
   return(DNAseqRc) 
 }
+
 
