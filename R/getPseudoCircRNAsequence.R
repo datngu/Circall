@@ -30,9 +30,11 @@ source("/path/to/R/load_packages.R", print.eval = FALSE)
  chnames = sapply(names(fasta_genome), function(x) unlist(strsplit(x, " "))[1])
  names(fasta_genome) = chnames
  
-# load tx.all.fasta and extract txname to dataframe
-tx.all.fasta = readDNAStringSet(txFastaFile)
-tx.all.NAME = sapply(names(tx.all.fasta), function(x) unlist(strsplit(x, " "))[1])
+# to get seqs from cDNA
+## fix bug on hg38 annotation, tx names with '.version' after tx name
+tx.all.NAME = sapply(names(tx.all.fasta),function(x) unlist(strsplit(x," "))[1])
+tx.all.NAME = sapply(names(tx.all.NAME),function(x) unlist(strsplit(x,".", fixed = T))[1])
+
 
 SE_filtering_res = load_SE_filtering(outFn_SE_filtering_Rdata)
 readLen = SE_filtering_res$fragInfo$readlen
