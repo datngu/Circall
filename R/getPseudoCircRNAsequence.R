@@ -8,6 +8,9 @@
 
 # UPDATE NOTES:
 # 03 Dec 2019: new format of tandem name, sep stat, break, end by "--" in order to avoid similar with tx name of rice
+# 31 March 2021
+## update simulator in 
+## fix bug on hg38 annotation, tx names with '.version' after tx name
 
 
 #########################
