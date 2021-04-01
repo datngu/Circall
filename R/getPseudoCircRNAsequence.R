@@ -33,7 +33,7 @@ source("/path/to/R/load_packages.R", print.eval = FALSE)
 # to get seqs from cDNA
 ## fix bug on hg38 annotation, tx names with '.version' after tx name
 tx.all.NAME = sapply(names(tx.all.fasta),function(x) unlist(strsplit(x," "))[1])
-tx.all.NAME = sapply(names(tx.all.NAME),function(x) unlist(strsplit(x,".", fixed = T))[1])
+tx.all.NAME = sapply(tx.all.NAME,function(x) unlist(strsplit(x,".", fixed = T))[1])
 
 
 SE_filtering_res = load_SE_filtering(outFn_SE_filtering_Rdata)

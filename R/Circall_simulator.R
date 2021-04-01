@@ -18,9 +18,6 @@
 ## update simulator with TPM as input
 
 
-  tx.all.NAME = sapply(names(tx.all.fasta),function(x) unlist(strsplit(x," "))[1])
-  tx.all.NAME = sapply(names(tx.all.NAME),function(x) unlist(strsplit(x,".", fixed = T))[1])
-
 Circall_simulator <- function(BSJ_Info,tandem_rate = 0,error_rate = 0.005, seed = 2018,gtfSqlite,genomeFastaFile,txFastaFile, lib_size = 100, out_name = "Circall_simuation",out_dir = "./",...){
   
   library("GenomicFeatures")
@@ -46,7 +43,7 @@ Circall_simulator <- function(BSJ_Info,tandem_rate = 0,error_rate = 0.005, seed 
   # to get seqs from cDNA
   ## fix bug on hg38 annotation, tx names with '.version' after tx name
   tx.all.NAME = sapply(names(tx.all.fasta),function(x) unlist(strsplit(x," "))[1])
-  tx.all.NAME = sapply(names(tx.all.NAME),function(x) unlist(strsplit(x,".", fixed = T))[1])
+  tx.all.NAME = sapply(tx.all.NAME,function(x) unlist(strsplit(x,".", fixed = T))[1])
 
   cat("\n finished processing genome and transcripts" )
 
