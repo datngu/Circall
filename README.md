@@ -261,6 +261,8 @@ The main output of Circall is provided in \**_Circall_final.txt.* In this file, 
 | fdr | the false discovery rate computed from the two-dimensional local false discovery method |
 
 
+
+
 ### A practical copy-paste example of running Circall
 
 In this section, we provide a practical example of using Circall in a copy-paste manner for a Hs68 cell line dataset.
@@ -410,7 +412,9 @@ You can find in the “./simulation_test” that contains the outputs including:
 - fasta sequences of tandem RNAs
 - fasta sequences of circular RNAs
 
-## License
+
+
+### License
 
 Circall uses GNU General Public License GPL-3.
 
