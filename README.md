@@ -410,7 +410,7 @@ You can find in the “./simulation_test” that contains the outputs including:
 - fasta sequences of tandem RNAs
 - fasta sequences of circular RNAs
 
-### License
+## License
 
 Circall uses GNU General Public License GPL-3.
 
