@@ -114,80 +114,6 @@ Now, you are ready to run Circall.
 
 ## 5. Run Circall pipeline
 
-You can download a prepared test data to test the pipeline:
-```sh
-wget https://github.com/datngu/Circall/releases/download/v0.0.0/sample_01_1.fasta.gz
-wget https://github.com/datngu/Circall/releases/download/v0.0.0/sample_01_2.fasta.gz
-```
-
-You can run Circall in one command that is warpped as a bash script:
-
-```sh
-bash Circall_v0.1.0_linux_x86-64/Circall.sh -genome Homo_sapiens.GRCh37.75.dna.primary_assembly.fa -gtfSqlite Homo_sapiens.GRCh37.75.sqlite -txFasta Homo_sapiens.GRCh37.75.cdna.all.fa -txIdx IndexTranscriptome -bsjIdx IndexBSJ -dep Circall_v0.1.0_linux_x86-64/Data/Circall_depdata_human.RData -read1 sample_01_1.fasta.gz -read2 sample_01_2.fasta.gz -p 4 -tag testing_sample -c FALSE -o Testing_out
-```
-### Obligatory parameters are:
-- genome -- genome in fasta format
-- gtfSqlite -- genome annotation in Sqlite format
-- txFasta -- transcripts (cDNA) in fasta format
-- txIdx -- quasi-index of txFasta
-- bsjIdx -- quasi-index of BSJ reference fasta file
-- read1 -- input read1: should be in gz format
-- read2 -- input read2: should be in gz format
-
-### Optional parameters are:
-- dep -- data contain depleted circRNAs: specify location of deletep data that is used as training data for estimation of fdr2d. We have prepared a Rdata file that contain data dirived from Hela, Hs68, and Hek293 datasets: Circall_v0.1.0_linux_x86-64/Data/Circall_depdata_human.RData
-- p -- number of thread: Defaut is 4
-- tag -- tag name of results:  Defaut is "Sample"
-- td -- generation of tandem sequences: TRUE/FALSE value, defaut is TRUE
-- c -- clean intermediate data: TRUE/FALSE value, defaut is TRUE
-- o -- output folder: Defaut is current directory
-
-
-
-
-## 6. A practical copy paste example of HEK293 dataset
-
-### Download and install Circall
-```sh
-wget https://github.com/datngu/Circall/releases/download/v0.0.0/Circall_v0.1.0_linux_x86-64.tar.gz -O Circall_v0.1.0_linux_x86-64.tar.gz
-```
-- Uncompress to folder
-```sh
-tar -xzvf Circall_v0.1.0_linux_x86-64.tar.gz
-```
-- Move to the *Circall_home* directory and do configuration for Circall
-```sh
-cd Circall_v0.1.0_linux_x86-64
-bash config.sh
-cd ..
-```
-- Add paths of lib folder and bin folder to LD_LIBRARY_PATH and PATH
-
-```sh
-export LD_LIBRARY_PATH=$PWD/Circall_v0.1.0_linux_x86-64/linux/lib:$LD_LIBRARY_PATH
-export PATH=$PWD/Circall_v0.1.0_linux_x86-64/linux/bin:$PATH
-```
-
-
-### Index transcriptome
-```sh
-Circall_v0.1.0_linux_x86-64/linux/bin/TxIndexer \
-    -t Homo_sapiens.GRCh37.75.cdna.all.fa \
-    -o IndexTranscriptome
-```
-### Index BSJ reference database
-
-```sh
-Circall_v0.1.0_linux_x86-64/linux/bin/TxIndexer \
-    -t Homo_sapiens.GRCh37.75_BSJ_sequences.fa \
-    -o IndexBSJ
-```
-
-__Now, all annotation data are generated and ready to run Circall.__
-
-
-### Run Circall pipeline
-
 Suppose sample_01_1.fasta and sample_01_2.fasta are the input fastq files. For convenience, we prepared a toy example to test the pipeline, which can be downloaded here:
 
 ```sh
@@ -212,9 +138,9 @@ bash Circall_v0.1.0_linux_x86-64/Circall.sh \
 
 ```
 
-### Inputs and parameters
+### Input, parameters, and output
 
-__Annotation data:__
+#### Annotation data
 
 | Parameters      | Description |
 | ----------- | ----------- |
@@ -225,7 +151,7 @@ __Annotation data:__
 | bsjIdx | quasi-index of BSJ reference fasta file |
 
 
-__Input data:__
+#### Input data
 
 | Parameters      | Description |
 | ----------- | ----------- |
@@ -234,7 +160,7 @@ __Input data:__
 
 
 
-__Other parameters:__
+#### Other parameters
 
 | Parameters      | Description |
 | ----------- | ----------- |
@@ -246,7 +172,7 @@ __Other parameters:__
 | o | output folder: Default is the current directory |
 
 
-__Output:__
+#### Output
 
 The main output of Circall is provided in \**_Circall_final.txt.* In this file, each row indicates one circular RNA, and the information of one circular RNA is presented in 8 columns:
 
@@ -262,8 +188,7 @@ The main output of Circall is provided in \**_Circall_final.txt.* In this file, 
 
 
 
-
-### A practical copy-paste example of running Circall
+## 6. A practical copy-paste example of running Circall
 
 In this section, we provide a practical example of using Circall in a copy-paste manner for a Hs68 cell line dataset.
 
@@ -349,10 +274,11 @@ bash Circall_v0.1.0_linux_x86-64/Circall.sh \
 ```
 
 
-### Circall simulator
-#### Introduction
+
+## 7. Circall simulator
+### Introduction
 Circall simulator is a tool integrated in Circall to generate RNA-seq data of both circRNA and tandem RNA. The source codes are provided in R/Circall_simulator.R of the Circall tool. The main function of the simulator is Circall_simulator() which is able to be run in R console. This function requires the following parameters:
-#### Parameter setting:
+### Parameter setting:
 
 | Name      | Description |
 | ----------- | ----------- |
@@ -368,7 +294,7 @@ Circall simulator is a tool integrated in Circall to generate RNA-seq data of bo
 | lib_size | expected library size used when useFPKM=TRUE, the default value is NULL|
 | useFPKM | boolean value to use FPKM or not, the default value is FALSE. When this useFPKM=TRUE, users need to set value for lib_size, and the simulator will use the abundance in column FPKM of circInfo/tandemInfo for simulation|
 
-#### A toy example for using Circall simulator
+### A toy example for using Circall simulator
 
 For an illustration of using Circall simulator, we provide in this section a toy example. Suppose your current working directory contains the installed Circall and the annotation data. First, we need to load the functions of the simulator into your R console:
 
@@ -413,8 +339,7 @@ You can find in the “./simulation_test” that contains the outputs including:
 - fasta sequences of circular RNAs
 
 
-
-### License
+## 8. License
 
 Circall uses GNU General Public License GPL-3.
 
