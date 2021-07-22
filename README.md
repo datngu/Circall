@@ -1,7 +1,9 @@
 
-# Documents for Circall: A fast and accurate methodology for discovery of circular RNAs from paired-end RNA-sequencing data
+# Circall: A fast and accurate methodology for discovery of circular RNAs from paired-end RNA-sequencing data
 
 ###########################################################
+
+__Details can be also found at:__ [https://www.meb.ki.se/sites/biostatwiki/circall/](https://www.meb.ki.se/sites/biostatwiki/circall/)
 
 ## Update news
 
@@ -15,8 +17,8 @@ Circall is a novel method for fast and accurate discovery of circular RNAs from 
 ### Software requirements:
 Circall is implemented in R and C++. We acknowledge for materials from Sailfish, Rapmap and other tools used in this software.
 
-- C++-11 compliant compiler version of GCC (g++ >= 4.8.2)
-- R packages version 3.6.0 or later with the following installed packages: GenomicFeatures, Biostrings, foreach, and doParalle
+- C++-11 compliant compiler version of `GCC (g++ >= 4.8.2)`
+- R packages version 3.6.0 or later with the following installed packages: `GenomicFeatures, Biostrings, foreach, and doParallel`
 
 ### Annotation reference
 Circall requires
