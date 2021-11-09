@@ -345,3 +345,6 @@ You can find in the “./simulation_test” that contains the outputs including:
 
 Circall uses GNU General Public License GPL-3.
 
+## 9. Reference
+
+Nguyen, Dat Thanh, Quang Thinh Trac, Thi-Hau Nguyen, Ha-Nam Nguyen, Nir Ohad, Yudi Pawitan, and Trung Nghia Vu. 2021. “Circall: Fast and Accurate Methodology for Discovery of Circular RNAs from Paired-End RNA-Sequencing Data.” BMC Bioinformatics 22 (1): 495. https://doi.org/10.1186/s12859-021-04418-8.
