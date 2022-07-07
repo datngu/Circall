@@ -36,11 +36,12 @@ Circall is a novel method for fast and accurate discovery of circular RNAs from 
 
 ### Annotation reference
 
-Circall requires
+Circall requires:
 
 1) a fasta file of transcript sequences and a gtf file of transcript annotation: can be downloaded from public repositories such as Ensembl (ensembl.org)
 2) a genome file of transcript sequences and a gtf file of transcript annotation: can be downloaded from public repositories such as Ensembl (ensembl.org)
-3) a RData file of supporting annotation: A description of how to create the RData file for new annotation versions or species is available in Section X.
+3) a RData file of supporting annotation: A description of how to create the RData file for new annotation versions or species is available in the following section.
+4) a back-splicing-junction (BSJ) reference sqeuences: A description of how to create the BSJ reference sqeuences for new annotation versions or species is available in the following section.
 
 Current Circall version was tested on the human genome (hg18 and hg38). Detail tutorials are in section 3 (hg19), and section 4 (hg38).
 
