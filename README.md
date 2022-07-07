@@ -17,7 +17,7 @@ First submission
 - Re-organization of the software package => user-friendly version with Docker.
 - Speed up file reading in R with data.table
 - Fix bugs in hg38 annotation.
-- Default ooption "-td" changed to FALSE
+- Default option "-td" changed to FALSE
 
 __NOTE:__ 
 - Tutorial has been changed for Docker running tutorial in this version.
