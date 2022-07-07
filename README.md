@@ -6,7 +6,8 @@
 
 ## Update news
 
-#### 19 June 2020: version 0.1.0
+
+### 19 June 2020: version 0.1.0
 
 __Instruction how to build the software from source can be found at:__ [https://www.meb.ki.se/sites/biostatwiki/circall/](https://www.meb.ki.se/sites/biostatwiki/circall/)
 
@@ -34,16 +35,14 @@ Circall is a novel method for fast and accurate discovery of circular RNAs from 
 - Docker
 
 ### Annotation reference
+
 Circall requires
 
 1) a fasta file of transcript sequences and a gtf file of transcript annotation: can be downloaded from public repositories such as Ensembl (ensembl.org)
 2) a genome file of transcript sequences and a gtf file of transcript annotation: can be downloaded from public repositories such as Ensembl (ensembl.org)
 3) a RData file of supporting annotation: A description of how to create the RData file for new annotation versions or species is available in Section X.
 
-Current Circall version was tested on the human genome, transcriptome with ensembl annotation version GRCh37.75. Following files are required:
-- Sequences of genome (ensembl website) [GRCh37.75 genome fasta](http://ftp.ensembl.org/pub/release-75/fasta/homo_sapiens/dna/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa.gz)
-- Sequences of transcripts (ensembl website) [GRCh37.75 cdna fasta](http://ftp.ensembl.org/pub/release-75/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh37.75.cdna.all.fa.gz)
-- Gtf annotation of transcripts (ensembl website) [GRCh37.75 gtf annotation](http://ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/Homo_sapiens.GRCh37.75.gtf.gz)
+Current Circall version was tested on the human genome (hg18 and hg38). Detail tutorials are in section 3 (hg19), and section 4 (hg38).
 
 
 ## 2. Download and installation
