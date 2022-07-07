@@ -3,22 +3,35 @@
 
 ###########################################################
 
-__Details can be also found at:__ [https://www.meb.ki.se/sites/biostatwiki/circall/](https://www.meb.ki.se/sites/biostatwiki/circall/)
 
 ## Update news
 
 #### 19 June 2020: version 0.1.0
+
+__Instruction how to build the software from source can be found at:__ [https://www.meb.ki.se/sites/biostatwiki/circall/](https://www.meb.ki.se/sites/biostatwiki/circall/)
+
 First submission
+
+### 06 July 2022: version 0.2.0
+
+- Re-organization of the software package => user-friendly version with Docker.
+- Speed up file reading in R with data.table
+- Fix bugs in hg38 annotation.
+- Default ooption "-td" changed to FALSE
+
+__NOTE:__ 
+- Tutorial has been changed for Docker running tutorial in this version.
+- An old version can be found in the sub-directory Circall_v0.1.0
+
+
 
 
 ## 1. Introduction
 Circall is a novel method for fast and accurate discovery of circular RNAs from paired-end RNA-sequencing data. The method controls false positives by two-dimensional local false discovery method and employs quasi-mapping for fast and accurate alignments. The details of Circall are described in its manuscript. In this page, we present the Circall tool and how to use it.
 
 ### Software requirements:
-Circall is implemented in R and C++. We acknowledge for materials from Sailfish, Rapmap and other tools used in this software.
 
-- C++-11 compliant compiler version of `GCC (g++ >= 4.8.2)`
-- R packages version 3.6.0 or later with the following installed packages: `GenomicFeatures, Biostrings, foreach, and doParallel`
+- Docker
 
 ### Annotation reference
 Circall requires
@@ -32,47 +45,65 @@ Current Circall version was tested on the human genome, transcriptome with ensem
 - Sequences of transcripts (ensembl website) [GRCh37.75 cdna fasta](http://ftp.ensembl.org/pub/release-75/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh37.75.cdna.all.fa.gz)
 - Gtf annotation of transcripts (ensembl website) [GRCh37.75 gtf annotation](http://ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/Homo_sapiens.GRCh37.75.gtf.gz)
 
-### Versions
-
-The latest version and information of Circall is updated at: https://github.com/datngu/Circall
 
 ## 2. Download and installation
 
-If you use the binary verion of Circall: 
-- Download the lastest binary version from Circall website: [Circall_v0.1.0](https://github.com/datngu/Circall)
-```sh
-wget https://github.com/datngu/Circall/releases/download/v0.1.0/Circall_v0.1.0_linux_x86-64.tar.gz -O Circall_v0.1.0_linux_x86-64.tar.gz
-```
-- Uncompress to folder
-```sh
-tar -xzvf Circall_v0.1.0_linux_x86-64.tar.gz
-```
-- Move to the *Circall_home* directory and do configuration for Circall
-```sh
-cd Circall_v0.1.0_linux_x86-64
-bash config.sh
-cd ..
-```
-- Add paths of lib folder and bin folder to LD_LIBRARY_PATH and PATH
-```sh
-export LD_LIBRARY_PATH=/path/to/Circall_v0.1.0_linux_x86-64/linux/lib:$LD_LIBRARY_PATH
-export PATH=/path/to/Circall_v0.1.0_linux_x86-64/linux/bin:$PATH
-```
-### Do not forget to replace "/path/to/" by your local path.
-
-or used this command to automaticlly replace your path:
+The esiest way to install and run Circall is using our pre-buit Docker immage: 
 
 ```sh
-export LD_LIBRARY_PATH=/path/to/Circall_v0.1.0_linux_x86-64/linux/lib:$LD_LIBRARY_PATH
-export PATH=/path/to/Circall_v0.1.0_linux_x86-64/linux/bin:$PATH
+# pull circall docker image:
+docker pull ndatth/circall:v0.2.0
+
+# test your docker
+docker run --rm ndatth/circall:v0.2.0 Circall.sh
 ```
+
+Expected output is:
+
+```text
+--------------------------------------------------------------------------
+                     _
+            _____   (_)   _____  _____   __        __      __
+           / ___/  / /   / ___/ / ___/  /  \      / /     / /
+          / /__   / /   / /    / /__   / __ \    / /__   / /__
+          \___/  /_/   /_/     \___/  /_/  \_\  /_/__/  /_/__/
+
+---------------------------------------------------------------------------
+                     Checking arguments ....
+---------------------------------------------------------------------------
+
+
+Usage:
+./Circall.sh
+    -genome [genome in fasta format]
+    -gtfSqlite [genome annotation in Sqlite format]
+    -txFasta [transcripts (cDNA) in fasta format]
+    -txIdx [quasi-index of txFasta]
+    -bsjIdx [quasi-index of BSJ reference fasta file]
+    -read1 [read1 fastq.gz file]
+    -read2 [read2 fastq.gz file]
+    -thread [number of thread]
+    -tag [tag name]
+    -td [TRUE/FALSE value, defaut is FALSE]
+    -c[TRUE/FALSE value, defaut is TRUE]
+    -o [output folder]
+
+ERROR: no genome sequence file !
+
+```
+
 
 __If you want to build Circall from sources: Please prefer to our wiki webpage [https://www.meb.ki.se/sites/biostatwiki/circall](https://www.meb.ki.se/sites/biostatwiki/circall/#user-content-2-download-and-installation) for detail instruction__
 
 
 
-## 3. Prepare BSJ reference database and Sqlite annotation file
-### Download genome fasta, transcript fasta and gtf annotation files.
+## 3. Tutorial for human genome hg19 (GRCh37), annotation version 75.
+
+### 3.1 Prepare BSJ reference database and Sqlite annotation file
+
+#### Download genome fasta, transcript fasta and gtf annotation files.
+
+
 ```sh
 wget http://ftp.ensembl.org/pub/release-75/fasta/homo_sapiens/dna/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa.gz
 gunzip Homo_sapiens.GRCh37.75.dna.primary_assembly.fa.gz
@@ -82,39 +113,58 @@ wget http://ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/Homo_sapiens.GRCh37.
 gunzip Homo_sapiens.GRCh37.75.gtf.gz
 ```
 
-### Create sqlite
+#### Create sqlite
 
 You can generate the sqlite annotation database was generated and able to download from [Homo_sapiens.GRCh37.75.sqlite](https://github.com/datngu/Circall/releases/download/v0.1.0/Homo_sapiens.GRCh37.75.sqlite). This file was generated by the following command:
 
+
 ```sh
-Rscript Circall_v0.1.0_linux_x86-64/R/createSqlite.R \
-    Homo_sapiens.GRCh37.75.gtf \
-    Homo_sapiens.GRCh37.75.sqlite
+# assumming you are running unix and $PWD: is the path to directory that is mounted to docker containter as /data:
+docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 createSqlite.R \
+        data/Homo_sapiens.GRCh37.75.gtf \
+        data/Homo_sapiens.GRCh37.75.sqlite
 ```
-### Create BSJ reference database
+
+#### Create BSJ reference database
 
 The BSJ reference database for Homo_sapiens.GRCh37.75 was generated and able to download from [Homo_sapiens.GRCh37.75_BSJ_sequences.fa](https://github.com/datngu/Circall/releases/download/v0.1.0/Homo_sapiens.GRCh37.75_BSJ_sequences.fa.gz). This file was generated by the following command:
 
-```sh
-Rscript Circall_v0.1.0_linux_x86-64/R/buildBSJdb.R \
-    gtfSqlite=Homo_sapiens.GRCh37.75.sqlite \
-    genomeFastaFile=Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
-    bsjDist=250 maxReadLen=150 \
-    output=Homo_sapiens.GRCh37.75_BSJ_sequences.fa
-```
-## 4. Indexing transcriptome and BSJ reference database
-### Index transcriptome
-```sh
-Circall_v0.1.0_linux_x86-64/linux/bin/TxIndexer -t Homo_sapiens.GRCh37.75.cdna.all.fa -o IndexTranscriptome
-```
-### Index BSJ reference database
 
 ```sh
-Circall_v0.1.0_linux_x86-64/linux/bin/TxIndexer -t Homo_sapiens.GRCh37.75_BSJ_sequences.fa -o IndexBSJ
+# assumming you are running unix and $PWD: is the path to directory that is mounted to docker containter as /data:
+docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 buildBSJdb.R \
+        gtfSqlite=data/Homo_sapiens.GRCh37.75.sqlite \
+        genomeFastaFile=data/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
+        bsjDist=250 maxReadLen=150 \
+        output=data/Homo_sapiens.GRCh37.75_BSJ_sequences.fa
 ```
+
+### 3.2 Indexing transcriptome and BSJ reference database
+
+#### Index transcriptome
+
+```sh
+# assumming you are running unix and $PWD: is the path to directory that is mounted to docker containter as /data:
+# please uncompress your fa file (with gunzip) before indexing 
+docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 TxIndexer \
+        -t data/Homo_sapiens.GRCh37.75.cdna.all.fa \
+        -o data/IndexTranscriptome
+```
+
+#### Index BSJ reference database
+
+
+```sh
+# assumming you are running unix and $PWD: is the path to directory that is mounted to docker containter as /data:
+# please uncompress your fa file (with gunzip) before indexing 
+docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 TxIndexer \
+        -t data/Homo_sapiens.GRCh37.75_BSJ_sequences.fa \
+        -o data/IndexBSJ
+```
+
 Now, you are ready to run Circall.
 
-## 5. Run Circall pipeline
+### 3.3 Run Circall pipeline
 
 Suppose sample_01_1.fasta and sample_01_2.fasta are the input fastq files. For convenience, we prepared a toy example to test the pipeline, which can be downloaded here:
 
@@ -125,22 +175,129 @@ wget https://github.com/datngu/Circall/releases/download/v0.1.0/sample_01_2.fast
 Circall can be run in one command wrapped in a bash script:
 
 ```sh
-bash Circall_v0.1.0_linux_x86-64/Circall.sh \
-    -genome Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
-    -gtfSqlite Homo_sapiens.GRCh37.75.sqlite \
-    -txFasta Homo_sapiens.GRCh37.75.cdna.all.fa \
-    -txIdx IndexTranscriptome -bsjIdx IndexBSJ \
-    -dep Circall_v0.1.0_linux_x86-64/Data/Circall_depdata_human.RData \
-    -read1 sample_01_1.fasta.gz \
-    -read2 sample_01_2.fasta.gz \
+docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 Circall.sh \
+    -genome data/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
+    -gtfSqlite data/Homo_sapiens.GRCh37.75.sqlite \
+    -txFasta data/Homo_sapiens.GRCh37.75.cdna.all.fa \
+    -txIdx data/IndexTranscriptome \
+    -bsjIdx data/IndexBSJ \
+    -dep Circall/Data/Circall_depdata_human.RData \
+    -read1 data/sample_01_1.fasta.gz \
+    -read2 data/sample_01_2.fasta.gz \
     -p 4 \
     -tag testing_sample \
     -c FALSE \
-    -o Testing_out
+    -td FASLE \
+    -o data/Testing_HG19_out
 
 ```
 
-### Input, parameters, and output
+NOTED: sample depdata of Hela, HEK293, HS68 (cell-lines) are located in Docker immage, path: `Circall/Data/Circall_depdata_human.RData`
+
+
+
+
+## 4. Tutorial for human genome hg38 (GRCh38), annotation version 106.
+
+### 4.1 Prepare BSJ reference database and Sqlite annotation file
+
+#### Download genome fasta, transcript fasta and gtf annotation files.
+
+
+```sh
+wget http://ftp.ensembl.org/pub/release-106/gtf/homo_sapiens/Homo_sapiens.GRCh38.106.gtf.gz -O Homo_sapiens.GRCh38.106.gtf.gz
+wget http://ftp.ensembl.org/pub/release-106/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh38.cdna.all.fa.gz -O Homo_sapiens.GRCh38.cdna.all.fa.gz
+wget http://ftp.ensembl.org/pub/release-106/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz -O Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+
+gunzip Homo_sapiens.GRCh38.106.gtf.gz
+gunzip Homo_sapiens.GRCh38.cdna.all.fa.gz
+gunzip Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
+```
+
+#### Create sqlite
+
+You can generate the sqlite annotation database was generated and able to download from [Homo_sapiens.GRCh38.106.sqlite](https://github.com/datngu/Circall/releases/download/v0.2.0/Homo_sapiens.GRCh38.106.sqlite). This file was generated by the following command:
+
+
+```sh
+# assumming you are running unix and $PWD: is the path to directory that is mounted to docker containter as /data:
+docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 createSqlite.R \
+        data/Homo_sapiens.GRCh38.106.gtf \
+        data/Homo_sapiens.GRCh38.106.sqlite
+```
+
+#### Create BSJ reference database
+
+The BSJ reference database for Homo_sapiens.GRCh38.106 was generated and able to download from [Homo_sapiens.GRCh38.106_BSJ_sequences.fa](https://github.com/datngu/Circall/releases/download/v0.2.0/Homo_sapiens.GRCh38.106_BSJ_sequences.fa.gz). This file was generated by the following command:
+
+
+```sh
+# assumming you are running unix and $PWD: is the path to directory that is mounted to docker containter as /data:
+docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 buildBSJdb.R \
+        gtfSqlite=data/Homo_sapiens.GRCh38.106.sqlite \
+        genomeFastaFile=data/Homo_sapiens.GRCh38.dna.primary_assembly.fa \
+        bsjDist=250 maxReadLen=150 \
+        output=data/Homo_sapiens.GRCh38.106_BSJ_sequences.fa
+```
+
+### 4.2 Indexing transcriptome and BSJ reference database
+
+#### Index transcriptome
+
+```sh
+# assumming you are running unix and $PWD: is the path to directory that is mounted to docker containter as /data:
+# please uncompress your fa file (with gunzip) before indexing 
+docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 TxIndexer \
+        -t data/Homo_sapiens.GRCh38.cdna.all.fa \
+        -o data/IndexTranscriptome
+```
+#### Index BSJ reference database
+
+
+```sh
+# assumming you are running unix and $PWD: is the path to directory that is mounted to docker containter as /data:
+# please uncompress your fa file (with gunzip) before indexing 
+docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 TxIndexer \
+        -t data/Homo_sapiens.GRCh38.106_BSJ_sequences.fa \
+        -o data/IndexBSJ
+```
+
+Now, you are ready to run Circall.
+
+### 4.3 Run Circall pipeline
+
+Suppose sample_01_1.fasta and sample_01_2.fasta are the input fastq files. For convenience, we prepared a toy example to test the pipeline, which can be downloaded here:
+
+```sh
+wget https://github.com/datngu/Circall/releases/download/v0.1.0/sample_01_1.fasta.gz
+wget https://github.com/datngu/Circall/releases/download/v0.1.0/sample_01_2.fasta.gz
+```
+Circall can be run in one command wrapped in a bash script:
+
+```sh
+docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 Circall.sh \
+    -genome data/Homo_sapiens.GRCh38.dna.primary_assembly.fa \
+    -gtfSqlite data/Homo_sapiens.GRCh38.106.sqlite \
+    -txFasta data/Homo_sapiens.GRCh38.cdna.all.fa \
+    -txIdx data/IndexTranscriptome \
+    -bsjIdx data/IndexBSJ \
+    -dep Circall/Data/Circall_depdata_human.RData \
+    -read1 data/sample_01_1.fasta.gz \
+    -read2 data/sample_01_2.fasta.gz \
+    -p 4 \
+    -tag testing_sample \
+    -c FALSE \
+    -td FASLE \
+    -o data/Testing_HG38_out
+
+```
+
+NOTED: sample depdata of Hela, HEK293, HS68 (cell-lines) are located in Docker immage, path: `Circall/Data/Circall_depdata_human.RData`
+
+
+
+
+## 5. Input, parameters, and output
 
 #### Annotation data
 
@@ -169,7 +326,7 @@ bash Circall_v0.1.0_linux_x86-64/Circall.sh \
 | dep | data contain depleted circRNAs: to specify the null data (depleted circRNA) for the two-dimensional local false discovery rate method. For convenience, we collect the null data from three human cell lines datasets Hela, Hs68, and Hek293 and provided in the tool: Circall_v0.1.0_linux_x86-64/Data/Circall_depdata_human.RData |
 | p | the number of threads: Default is 4 |
 | tag | tag name of results: Default is “Sample” |
-| td | generation of tandem sequences: TRUE/FALSE value, default is TRUE |
+| td | generation of tandem sequences: TRUE/FALSE value, default is FASLE |
 | c | clean intermediate data: TRUE/FALSE value, default is TRUE |
 | o | output folder: Default is the current directory |
 
@@ -190,96 +347,13 @@ The main output of Circall is provided in \**_Circall_final.txt.* In this file, 
 
 
 
-## 6. A practical copy-paste example of running Circall
 
-In this section, we provide a practical example of using Circall in a copy-paste manner for a Hs68 cell line dataset.
+## 6. Circall simulator
 
-__Download and install Circall__
-
-```sh
-wget https://github.com/datngu/Circall/releases/download/v0.1.0/Circall_v0.1.0_linux_x86-64.tar.gz -O Circall_v0.1.0_linux_x86-64.tar.gz
-```
-- Uncompress to folder
-```sh
-tar -xzvf Circall_v0.1.0_linux_x86-64.tar.gz
-```
-- Move to the *Circall_home* directory and do configuration for Circall
-```sh
-cd Circall_v0.1.0_linux_x86-64
-bash config.sh
-cd ..
-```
-- Add paths of lib folder and bin folder to LD_LIBRARY_PATH and PATH
-
-```sh
-export LD_LIBRARY_PATH=/path/to/Circall_v0.1.0_linux_x86-64/linux/lib:$LD_LIBRARY_PATH
-export PATH=/path/to/Circall_v0.1.0_linux_x86-64/linux/bin:$PATH
-```
-
-__Download genome fasta, transcript fasta and BSJ databases and annotation file__
-
-```sh
-# genome from ENSEMBL website
-wget http://ftp.ensembl.org/pub/release-75/fasta/homo_sapiens/dna/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa.gz
-gunzip Homo_sapiens.GRCh37.75.dna.primary_assembly.fa.gz
-
-# cDNA (transcript) and Gene annotation (gft) from ENSEMBL website
-wget http://ftp.ensembl.org/pub/release-75/fasta/homo_sapiens/cdna/Homo_sapiens.GRCh37.75.cdna.all.fa.gz
-gunzip Homo_sapiens.GRCh37.75.cdna.all.fa.gz
-wget http://ftp.ensembl.org/pub/release-75/gtf/homo_sapiens/Homo_sapiens.GRCh37.75.gtf.gz
-gunzip Homo_sapiens.GRCh37.75.gtf.gz
-
-# pre-built BSJ databases from Circall website
-wget https://github.com/datngu/Circall/releases/download/v0.1.0/Homo_sapiens.GRCh37.75_BSJ_sequences.fa.gz
-gunzip Homo_sapiens.GRCh37.75_BSJ_sequences.fa.gz
-
-# Genarate Sqlite annotation
-Rscript Circall_v0.1.0_linux_x86-64/R/createSqlite.R Homo_sapiens.GRCh37.75.gtf Homo_sapiens.GRCh37.75.sqlite
-```
-
-__Index transcriptome__
-
-```sh
-Circall_v0.1.0_linux_x86-64/linux/bin/TxIndexer \
-    -t Homo_sapiens.GRCh37.75.cdna.all.fa \
-    -o IndexTranscriptome
-```
-
-__Index BSJ reference database__
-
-```sh
-Circall_v0.1.0_linux_x86-64/linux/bin/TxIndexer \
-    -t Homo_sapiens.GRCh37.75_BSJ_sequences.fa \
-    -o IndexBSJ
-```
-
-__Download Hs68 cell line RNA-seq data__
-```sh
-wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR444/SRR444975/SRR444975_1.fastq.gz
-wget ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR444/SRR444975/SRR444975_2.fastq.gz
-```
-
-__Run Circall__
-```sh
-bash Circall_v0.1.0_linux_x86-64/Circall.sh \
-    -genome Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
-    -gtfSqlite Homo_sapiens.GRCh37.75.sqlite \
-    -txFasta Homo_sapiens.GRCh37.75.cdna.all.fa \
-    -txIdx IndexTranscriptome \
-    -bsjIdx IndexBSJ \
-    -dep Circall_v0.1.0_linux_x86-64/Data/Circall_depdata_human.RData \
-    -read1 SRR444975_1.fastq.gz \
-    -read2 SRR444975_2.fastq.gz \
-    -p 4 \
-    -tag testing_sample \
-    -o SRR444975
-```
-
-
-
-## 7. Circall simulator
 ### Introduction
-Circall simulator is a tool integrated in Circall to generate RNA-seq data of both circRNA and tandem RNA. The source codes are provided in R/Circall_simulator.R of the Circall tool. The main function of the simulator is Circall_simulator() which is able to be run in R console. This function requires the following parameters:
+
+Circall simulator is a tool integrated in Circall to generate RNA-seq data of both circRNA and tandem RNA. The source codes are provided in `R/Circall_simulator.R` of the Circall package. The main function of the simulator is `Circall_simulator()` which is able to be run in R console. This function requires the following parameters:
+
 ### Parameter setting:
 
 | Name      | Description |
@@ -301,7 +375,7 @@ Circall simulator is a tool integrated in Circall to generate RNA-seq data of bo
 For an illustration of using Circall simulator, we provide in this section a toy example. Suppose your current working directory contains the installed Circall and the annotation data. First, we need to load the functions of the simulator into your R console:
 
 ```R
-source("Circall_v0.1.0_linux_x86-64/R/Circall_simulator.R")
+source("/Circall_v0.2.0/R/Circall_simulator.R")
 ```
 Then we create objects __circInfo__ and __tandemInfo__ containing the information of CircRNAs and tandem RNAs
 
@@ -341,10 +415,10 @@ You can find in the “./simulation_test” that contains the outputs including:
 - fasta sequences of circular RNAs
 
 
-## 8. License
+## 7. License
 
 Circall uses GNU General Public License GPL-3.
 
-## 9. Reference
+## 8. Reference and citation
 
 Nguyen, Dat Thanh, Quang Thinh Trac, Thi-Hau Nguyen, Ha-Nam Nguyen, Nir Ohad, Yudi Pawitan, and Trung Nghia Vu. 2021. “Circall: Fast and Accurate Methodology for Discovery of Circular RNAs from Paired-End RNA-Sequencing Data.” BMC Bioinformatics 22 (1): 495. https://doi.org/10.1186/s12859-021-04418-8.

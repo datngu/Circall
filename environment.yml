@@ -1,0 +1,15 @@
+name: circall
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+  - r
+dependencies:
+  # for CirCall
+  - bioconda::bioconductor-genomicfeatures
+  - bioconda::bioconductor-biostrings
+  - r-foreach
+  - r-doparallel
+  - r-data.table
+  - r-base=4.0.2
+
