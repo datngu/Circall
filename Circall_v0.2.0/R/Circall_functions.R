@@ -656,11 +656,11 @@ get_fdr2d <- function(in_fn,pre_fn){
   circRNA_list=cbind(circRNA_list,fdr=fdr$ifdr)
 
   #export to file
-  selectColumns=c("normID","fragment_count","median.circlen","fdr")
+  selectColumns=c("normID","fragment_count","fragment_count_norm","median.circlen","fdr")
   circRNA_list=circRNA_list[,selectColumns]
   circInfo=cbind(circInfo,circRNA_list)
   circInfo=circInfo[order(circInfo$fdr,decreasing = FALSE),]
-  colnames(circInfo)=c("chr","start","end","geneID","exonID_start","exonID_end","circID","junction_fragment_count","median_circlen","fdr")
+  colnames(circInfo)=c("chr","start","end","geneID","exonID_start","exonID_end","circID","junction_fragment_count", "junction_FPM","median_circlen","fdr")
   circInfo=circInfo[,-c(5,6)]
   return(list(circInfo=circInfo,fdr=fdr))
 }
