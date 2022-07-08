@@ -18,4 +18,4 @@ ENV PATH /Circall/linux/bin:$PATH
 
 WORKDIR /Circall
 RUN bash ./config.sh
-WORKDIR 
+WORKDIR /
