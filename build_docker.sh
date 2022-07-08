@@ -2,9 +2,9 @@
 
 docker build -t circall_dev:v0.0.0 -f Dockerfile .
 
-# v0.2.0
-docker tag circall_dev:v0.0.0 ndatth/circall:v0.2.0
-docker push ndatth/circall:v0.2.0
+# v1.0.0
+docker tag circall_dev:v0.0.0 ndatth/circall:v1.0.0
+docker push ndatth/circall:v1.0.0
 
 
 
@@ -13,29 +13,29 @@ docker push ndatth/circall:v0.2.0
 cd /sigma4/data/genome_ref_GRCh37.75
 
 # pull circall docker image:
-docker pull ndatth/circall:v0.2.0
+docker pull ndatth/circall:v1.0.0
 
 # test your docker
-docker run --rm ndatth/circall:v0.2.0 Circall.sh
+docker run --rm ndatth/circall:v1.0.0 Circall.sh
 
 # assumming you are running unix and $PWD: is the path to directory that is mounted to docker containter as /data:
-docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 createSqlite.R \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 createSqlite.R \
         data/Homo_sapiens.GRCh37.75.gtf \
         data/Homo_sapiens.GRCh37.75.sqlite
 
-docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 buildBSJdb.R \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 buildBSJdb.R \
         gtfSqlite=data/Homo_sapiens.GRCh37.75.sqlite \
         genomeFastaFile=data/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
         bsjDist=250 maxReadLen=150 \
         output=data/Homo_sapiens.GRCh37.75_BSJ_sequences.fa
 
 
-docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 TxIndexer \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 TxIndexer \
         -t data/Homo_sapiens.GRCh37.75.cdna.all.fa \
         -o data/IndexTranscriptome
 
 
-docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 TxIndexer \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 TxIndexer \
         -t data/Homo_sapiens.GRCh37.75_BSJ_sequences.fa \
         -o data/IndexBSJ
 
@@ -43,7 +43,7 @@ docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 TxIndexer \
 wget https://github.com/datngu/Circall/releases/download/v0.1.0/sample_01_1.fasta.gz
 wget https://github.com/datngu/Circall/releases/download/v0.1.0/sample_01_2.fasta.gz
 
-docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 Circall.sh \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 Circall.sh \
     -genome data/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
     -gtfSqlite data/Homo_sapiens.GRCh37.75.sqlite \
     -txFasta data/Homo_sapiens.GRCh37.75.cdna.all.fa \
@@ -75,31 +75,31 @@ gunzip Homo_sapiens.GRCh38.dna.primary_assembly.fa.gz
 
 
 # pull circall docker image:
-docker pull ndatth/circall:v0.2.0
+docker pull ndatth/circall:v1.0.0
 
 # test your docker
-docker run --rm ndatth/circall:v0.2.0 Circall.sh
+docker run --rm ndatth/circall:v1.0.0 Circall.sh
 
 
 # assumming you are running unix and $PWD: is the path to directory that is mounted to docker containter as /data:
-docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 createSqlite.R \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 createSqlite.R \
         data/Homo_sapiens.GRCh38.106.gtf \
         data/Homo_sapiens.GRCh38.106.sqlite
 
 
-docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 buildBSJdb.R \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 buildBSJdb.R \
         gtfSqlite=data/Homo_sapiens.GRCh38.106.sqlite \
         genomeFastaFile=data/Homo_sapiens.GRCh38.dna.primary_assembly.fa \
         bsjDist=250 maxReadLen=150 \
         output=data/Homo_sapiens.GRCh38.106_BSJ_sequences.fa
 
 
-docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 TxIndexer \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 TxIndexer \
         -t data/Homo_sapiens.GRCh38.cdna.all.fa \
         -o data/IndexTranscriptome
 
 
-docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 TxIndexer \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 TxIndexer \
         -t data/Homo_sapiens.GRCh38.106_BSJ_sequences.fa \
         -o data/IndexBSJ
 
@@ -107,7 +107,7 @@ docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 TxIndexer \
 wget https://github.com/datngu/Circall/releases/download/v0.1.0/sample_01_1.fasta.gz
 wget https://github.com/datngu/Circall/releases/download/v0.1.0/sample_01_2.fasta.gz
 
-docker run --rm -v $PWD:/data ndatth/circall:v0.2.0 Circall.sh \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 Circall.sh \
     -genome data/Homo_sapiens.GRCh38.dna.primary_assembly.fa \
     -gtfSqlite data/Homo_sapiens.GRCh38.106.sqlite \
     -txFasta data/Homo_sapiens.GRCh38.cdna.all.fa \
