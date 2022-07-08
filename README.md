@@ -16,13 +16,14 @@ First submission
 ### 06 July 2022: version 0.2.0
 
 - Re-organization of the software package => user-friendly version with Docker.
-- Speed up file reading in R with data.table
+- Speed up file reading in R with data.table.
 - Fix bugs in hg38 annotation.
-- Default option "-td" changed to FALSE
+- Default option "-td" changed to FALSE.
+- Output format with an additional column: junction_FPM - junction fragment per million .i.e, junction_fragment_count normalized by million fragment unit.
 
 __NOTE:__ 
 - Tutorial has been changed for Docker running tutorial in this version.
-- An old version can be found in the sub-directory Circall_v0.1.0
+- An old version can be found in the sub-directory Circall_v0.1.0.
 
 
 
