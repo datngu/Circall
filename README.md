@@ -342,7 +342,9 @@ The main output of Circall is provided in \**_Circall_final.txt.* In this file, 
 | end | end position |
 | geneID | gene name that the circRNA belongs to |
 | circID | the ID of circRNA in the format “chr__start__end” |
-| junction_fragment_count | the number of fragment counts supporting the back-splicing-junction (BSJ) median_circlen the median length of the circular RNA |
+| junction_fragment_count | the number of fragment counts supporting the back-splicing-junction (BSJ) |
+| junction_FPM | junction fragment per million .i.e, junction_fragment_count normalized by million fragment unit |
+| median_circlen the median | length of the circular RNA |
 | fdr | the false discovery rate computed from the two-dimensional local false discovery method |
 
 
