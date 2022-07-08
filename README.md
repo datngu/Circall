@@ -3,6 +3,7 @@
 
 ###########################################################
 
+[![Docker Image CI](https://github.com/datngu/circall/actions/workflows/docker-image.yml/badge.svg)](https://github.com/datngu/circall/actions/workflows/docker-image.yml)
 
 ## Update news
 
