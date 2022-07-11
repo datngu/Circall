@@ -74,11 +74,11 @@ docker run --rm -v $PWD:/data ndatth/circall:v1.0.1 Circall.sh \
     -dep Circall/Data/Circall_depdata_human.RData \
     -read1 data/sample_01_1.fasta.gz \
     -read2 data/sample_01_2.fasta.gz \
-    -p 4 \
+    -p 12 \
     -tag testing_sample \
     -c FALSE \
     -td FASLE \
-    -o data/Testing_out
+    -o data/Testing_out_v1.0.1
 
 
 
