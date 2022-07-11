@@ -27,6 +27,9 @@ __NOTE:__
 - An old version can be found in the sub-directory Circall_v0.1.0.
 
 
+### 11 July 2022: version 1.0.1
+- Some changes in C++ binary (rebuild the software).
+
 
 
 ## 1. Introduction
@@ -54,10 +57,10 @@ The esiest way to install and run Circall is using our pre-buit Docker immage:
 
 ```sh
 # pull circall docker image:
-docker pull ndatth/circall:v1.0.0
+docker pull ndatth/circall:v1.0.1
 
 # test your docker
-docker run --rm ndatth/circall:v1.0.0 Circall.sh
+docker run --rm ndatth/circall:v1.0.1 Circall.sh
 ```
 
 Expected output is:
@@ -122,7 +125,7 @@ You can generate the sqlite annotation database was generated and able to downlo
 
 ```sh
 # assumming you are running unix and $PWD: is the path to directory that is mounted to docker containter as /data:
-docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 createSqlite.R \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.1 createSqlite.R \
         data/Homo_sapiens.GRCh37.75.gtf \
         data/Homo_sapiens.GRCh37.75.sqlite
 ```
@@ -134,7 +137,7 @@ The BSJ reference database for Homo_sapiens.GRCh37.75 was generated and able to 
 
 ```sh
 # assumming you are running unix and $PWD: is the path to directory that is mounted to docker containter as /data:
-docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 buildBSJdb.R \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.1 buildBSJdb.R \
         gtfSqlite=data/Homo_sapiens.GRCh37.75.sqlite \
         genomeFastaFile=data/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
         bsjDist=250 maxReadLen=150 \
@@ -148,7 +151,7 @@ docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 buildBSJdb.R \
 ```sh
 # assumming you are running unix and $PWD: is the path to directory that is mounted to docker containter as /data:
 # please uncompress your fa file (with gunzip) before indexing 
-docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 TxIndexer \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.1 TxIndexer \
         -t data/Homo_sapiens.GRCh37.75.cdna.all.fa \
         -o data/IndexTranscriptome
 ```
@@ -159,7 +162,7 @@ docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 TxIndexer \
 ```sh
 # assumming you are running unix and $PWD: is the path to directory that is mounted to docker containter as /data:
 # please uncompress your fa file (with gunzip) before indexing 
-docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 TxIndexer \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.1 TxIndexer \
         -t data/Homo_sapiens.GRCh37.75_BSJ_sequences.fa \
         -o data/IndexBSJ
 ```
@@ -177,7 +180,7 @@ wget https://github.com/datngu/Circall/releases/download/v0.1.0/sample_01_2.fast
 Circall can be run in one command wrapped in a bash script:
 
 ```sh
-docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 Circall.sh \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.1 Circall.sh \
     -genome data/Homo_sapiens.GRCh37.75.dna.primary_assembly.fa \
     -gtfSqlite data/Homo_sapiens.GRCh37.75.sqlite \
     -txFasta data/Homo_sapiens.GRCh37.75.cdna.all.fa \
@@ -223,7 +226,7 @@ You can generate the sqlite annotation database was generated and able to downlo
 
 ```sh
 # assumming you are running unix and $PWD: is the path to directory that is mounted to docker containter as /data:
-docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 createSqlite.R \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.1 createSqlite.R \
         data/Homo_sapiens.GRCh38.106.gtf \
         data/Homo_sapiens.GRCh38.106.sqlite
 ```
@@ -235,7 +238,7 @@ The BSJ reference database for Homo_sapiens.GRCh38.106 was generated and able to
 
 ```sh
 # assumming you are running unix and $PWD: is the path to directory that is mounted to docker containter as /data:
-docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 buildBSJdb.R \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.1 buildBSJdb.R \
         gtfSqlite=data/Homo_sapiens.GRCh38.106.sqlite \
         genomeFastaFile=data/Homo_sapiens.GRCh38.dna.primary_assembly.fa \
         bsjDist=250 maxReadLen=150 \
@@ -249,7 +252,7 @@ docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 buildBSJdb.R \
 ```sh
 # assumming you are running unix and $PWD: is the path to directory that is mounted to docker containter as /data:
 # please uncompress your fa file (with gunzip) before indexing 
-docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 TxIndexer \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.1 TxIndexer \
         -t data/Homo_sapiens.GRCh38.cdna.all.fa \
         -o data/IndexTranscriptome
 ```
@@ -259,7 +262,7 @@ docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 TxIndexer \
 ```sh
 # assumming you are running unix and $PWD: is the path to directory that is mounted to docker containter as /data:
 # please uncompress your fa file (with gunzip) before indexing 
-docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 TxIndexer \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.1 TxIndexer \
         -t data/Homo_sapiens.GRCh38.106_BSJ_sequences.fa \
         -o data/IndexBSJ
 ```
@@ -277,7 +280,7 @@ wget https://github.com/datngu/Circall/releases/download/v0.1.0/sample_01_2.fast
 Circall can be run in one command wrapped in a bash script:
 
 ```sh
-docker run --rm -v $PWD:/data ndatth/circall:v1.0.0 Circall.sh \
+docker run --rm -v $PWD:/data ndatth/circall:v1.0.1 Circall.sh \
     -genome data/Homo_sapiens.GRCh38.dna.primary_assembly.fa \
     -gtfSqlite data/Homo_sapiens.GRCh38.106.sqlite \
     -txFasta data/Homo_sapiens.GRCh38.cdna.all.fa \
