@@ -4,7 +4,8 @@ docker build -t circall_dev:v0.0.1 -f Dockerfile .
 
 # v1.0.0
 docker tag circall_dev:v0.0.1 ndatth/circall:v1.0.1
-#docker push ndatth/circall:v1.0.1
+docker push ndatth/circall:v1.0.1
+echo DONE
 
 ## change bin data
 
