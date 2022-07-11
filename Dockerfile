@@ -6,7 +6,7 @@ LABEL authors="Dat T Nguyen" \
 
 
 ADD environment.yml /
-ADD Circall_v1.0.0 /Circall
+ADD Circall_v1.0.1 /Circall
 
 
 RUN conda install mamba -n base -c conda-forge -y
