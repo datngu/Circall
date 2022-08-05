@@ -5,14 +5,13 @@
 
 [![Docker Image CI](https://github.com/datngu/circall/actions/workflows/docker-image.yml/badge.svg)](https://github.com/datngu/circall/actions/workflows/docker-image.yml)
 
+
+__IMPORTANT NOTE: I tested with 45GB of RAM and 32 CPU cores and recommend a minimum of 45 GB of RAM to obtain stable results for Circall.__
+
 ## Update news
 
-
-### 19 June 2020: version 0.1.0
-
-__Instruction how to build the software from source can be found at:__ [https://www.meb.ki.se/sites/biostatwiki/circall/](https://www.meb.ki.se/sites/biostatwiki/circall/)
-
-First submission
+### 11 July 2022: version 1.0.1
+- Some changes in C++ binary (rebuild the software).
 
 ### 06 July 2022: version 1.0.0
 
@@ -26,9 +25,13 @@ __NOTE:__
 - Tutorial has been changed for Docker running tutorial in this version.
 - An old version can be found in the sub-directory Circall_v0.1.0.
 
+### 19 June 2020: version 0.1.0
 
-### 11 July 2022: version 1.0.1
-- Some changes in C++ binary (rebuild the software).
+__Instruction how to build the software from source can be found at:__ [https://www.meb.ki.se/sites/biostatwiki/circall/](https://www.meb.ki.se/sites/biostatwiki/circall/)
+
+First submission
+
+
 
 
 
