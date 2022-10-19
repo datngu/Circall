@@ -96,8 +96,6 @@ Usage:
     -c[TRUE/FALSE value, defaut is TRUE]
     -o [output folder]
 
-ERROR: no genome sequence file !
-
 ```
 
 
